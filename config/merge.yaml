@@ -1,0 +1,12 @@
+proxies:
+- { name: 美国住宅ISP, server: proxy.quanqiudaili.com, port: 5001, type: socks5, username: gp67511srtisp-1, password: ksguvm8a, udp: true  }
+proxy-groups:
+- name: 链式代理
+  type: relay
+  proxies:
+    - 美国-自动
+    - 美国住宅ISP
+rules:
+- SRC-IP-CIDR,192.168.100.206/32,链式代理
+- DOMAIN,proxy.quanqiudaili.com,美国-自动,no-resolve
+
