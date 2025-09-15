@@ -10,6 +10,7 @@ DOMAIN-KEYWORD,yunlogin
 DST-PORT,22,IP-CIDR,216.167.40.204/32,no-resolve
 DOMAIN-KEYWORD,tiktokglobalshop
 DOMAIN-KEYWORD,chuhaijiang
+DOMAIN-KEYWORD,hicustom
 
 
 
