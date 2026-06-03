@@ -1,76 +1,78 @@
 function operator(proxies = [], targetPlatform, context) {
-const LANDING_MARK = /自建住宅/;
-const CHAIN_MARK = "链式｜";
+  const LANDING_MARK = /自建住宅/;
+  const CHAIN_MARK = "链式｜";
 
-// 允许作为自建落地复制成链式节点的协议
-const ALLOWED_TYPES = new Set(["ss", "shadowsocks", "trojan"]);
+  // 允许作为自建落地复制成链式节点的协议
+  const ALLOWED_TYPES = new Set(["ss", "shadowsocks", "trojan"]);
 
-const output = [...proxies];
+  const output = Array.isArray(proxies) ? [...proxies] : [];
 
-function stripProtocolPrefix(name) {
-return String(name || "")
-.replace(/^[[^]]+]\s*/, "")
-.trim();
-}
+  function stripProtocolPrefix(name) {
+    return String(name || "")
+      .replace(/^\[[^\]]+\]\s*/, "")
+      .trim();
+  }
 
-function getProtocolLabel(proxy) {
-const type = String(proxy.type || "").toLowerCase();
+  function getProtocolLabel(proxy) {
+    const type = String(proxy.type || "").toLowerCase();
 
-if (type === "ss" || type === "shadowsocks") return "SS";
-if (type === "trojan") return "Trojan";
+    if (type === "ss" || type === "shadowsocks") return "SS";
+    if (type === "trojan") return "Trojan";
 
-const name = String(proxy.name || "");
-const match = name.match(/^\[([^\]]+)\]/);
-if (match) return match[1];
+    const name = String(proxy.name || "");
+    const match = name.match(/^\[([^\]]+)\]/);
+    if (match) return match[1];
 
-return "Proxy";
+    return "Proxy";
+  }
 
-}
+  function cleanLandingName(name) {
+    return stripProtocolPrefix(name)
+      .replace(/^链式｜/, "")
+      .replace(/^(SS|Trojan|VMess|VLESS|Shadowsocks)｜/i, "")
+      .replace(/[-_｜\s]*(trojan|ss|shadowsocks)$/i, "")
+      .trim();
+  }
 
-function cleanLandingName(name) {
-return stripProtocolPrefix(name)
-.replace(/^链式｜/, "")
-.replace(/^(SS|Trojan|VMess|VLESS|Shadowsocks)｜/i, "")
-.replace(/[-_｜\s]*(trojan|ss|shadowsocks)$/i, "")
-.trim();
-}
+  function transitGroupName(baseName, protocolLabel) {
+    return `🔁 中转选择｜${baseName}-${protocolLabel}`;
+  }
 
-function transitGroupName(baseName, protocolLabel) {
-return 🔁 中转选择｜${baseName}-${protocolLabel};
-}
+  const existingNormalizedNames = new Set(
+    output.map((p) => stripProtocolPrefix(p && p.name))
+  );
 
-const existingNormalizedNames = new Set(
-proxies.map(p => stripProtocolPrefix(p.name))
-);
+  for (const proxy of output.slice()) {
+    if (!proxy) continue;
 
-for (const proxy of proxies) {
-const name = proxy.name || "";
-const type = String(proxy.type || "").toLowerCase();
+    const name = String(proxy.name || "");
+    const type = String(proxy.type || "").toLowerCase();
 
-if (!LANDING_MARK.test(name)) continue;
-if (name.includes(CHAIN_MARK)) continue;
-if (!ALLOWED_TYPES.has(type)) continue;
+    if (!LANDING_MARK.test(name)) continue;
+    if (name.includes(CHAIN_MARK)) continue;
+    if (!ALLOWED_TYPES.has(type)) continue;
 
-const protocolLabel = getProtocolLabel(proxy);
-const baseName = cleanLandingName(name);
+    const protocolLabel = getProtocolLabel(proxy);
+    const baseName = cleanLandingName(name);
 
-const chainName = `${CHAIN_MARK}${protocolLabel}｜${baseName}`;
+    if (!baseName) continue;
 
-if (existingNormalizedNames.has(chainName)) continue;
+    const chainName = `${CHAIN_MARK}${protocolLabel}｜${baseName}`;
 
-const chain = JSON.parse(JSON.stringify(proxy));
+    if (existingNormalizedNames.has(chainName)) continue;
 
-chain.name = chainName;
+    const chain = JSON.parse(JSON.stringify(proxy));
 
-// SS / Trojan 分别跟随不同的中转选择组
-chain["dialer-proxy"] = transitGroupName(baseName, protocolLabel);
+    chain.name = chainName;
 
-delete chain["underlying-proxy"];
+    // SS / Trojan 分别跟随不同的中转选择组
+    chain["dialer-proxy"] = transitGroupName(baseName, protocolLabel);
 
-output.push(chain);
-existingNormalizedNames.add(chainName);
+    delete chain["underlying-proxy"];
 
-}
+    output.push(chain);
+    existingNormalizedNames.add(chainName);
+  }
 
-return output;
+  return output;
 }
