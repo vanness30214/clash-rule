@@ -39,7 +39,7 @@ function operator(proxies = [], targetPlatform, context) {
   }
 
   const existingNormalizedNames = new Set(
-    proxies.map(p => stripProtocolPrefix(p.name))
+    proxies.map((p) => stripProtocolPrefix(p.name))
   );
 
   for (const proxy of proxies) {
