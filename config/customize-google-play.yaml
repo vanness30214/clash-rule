@@ -1,0 +1,26 @@
+payload:
+  - DOMAIN,play.google.com
+  - DOMAIN,play.googleapis.com
+  - DOMAIN,play-fe.googleapis.com
+  - DOMAIN-SUFFIX,googleplay.com
+  - DOMAIN-SUFFIX,xn--ngstr-lra8j.com
+  - DOMAIN,services.googleapis.cn
+  - DOMAIN-SUFFIX,googleapis.cn
+  - DOMAIN-SUFFIX,gvt1.com
+  - DOMAIN-SUFFIX,gvt2.com
+  - DOMAIN-SUFFIX,gvt3.com
+  - DOMAIN-SUFFIX,gvt5.com
+  - DOMAIN-SUFFIX,gvt6.com
+  - DOMAIN-SUFFIX,gvt7.com
+  - DOMAIN-SUFFIX,gvt9.com
+  - DOMAIN,android.clients.google.com
+  - DOMAIN,clients.google.com
+  - DOMAIN,clients1.google.com
+  - DOMAIN,clients2.google.com
+  - DOMAIN,clients3.google.com
+  - DOMAIN,clients4.google.com
+  - DOMAIN,clients5.google.com
+  - DOMAIN,clients6.google.com
+  - DOMAIN,play-games.googleusercontent.com
+  - DOMAIN,play-lh.googleusercontent.com
+  - DOMAIN-SUFFIX,ggpht.com
