@@ -1,2 +1,4 @@
 payload:
+  - DOMAIN-KEYWORD,tradingview
+  - DOMAIN-KEYWORD,aicoin
   - DOMAIN-SUFFIX,bitget.com
