@@ -3,7 +3,7 @@ function operator(proxies = [], targetPlatform, context) {
   const CHAIN_MARK = "链式｜";
 
   // 允许作为自建落地复制成链式节点的协议
-  const ALLOWED_TYPES = new Set(["ss", "shadowsocks", "trojan"]);
+ const ALLOWED_TYPES = new Set(["ss", "shadowsocks"]);
 
   const output = Array.isArray(proxies) ? [...proxies] : [];
 
